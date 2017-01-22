@@ -18,8 +18,8 @@ args = parser.parse_args()
 t7_model = load_lua(args.input_t7)['model']
 
 pytorch_model = getattr(models, args.model_name)()
-feature_modules = list(pytorch_model.features._modules.values())
-classifier_modules = list(pytorch_model.classifier._modules.values())
+feature_modules = list(pytorch_model.features.modules())
+classifier_modules = list(pytorch_model.classifier.modules())
 pytorch_modules = feature_modules + classifier_modules
 
 next_pytorch_idx = 0
