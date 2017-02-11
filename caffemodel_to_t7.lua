@@ -5,13 +5,13 @@ require 'cunn'
 require 'cudnn'
 require 'loadcaffe'
 
-"""
+--[[
 Use loadcaffe to load a Caffe model and store it in a .t7 file.
 
 We also run some random data through the model and store it in the .t7 file so
 we can make sure that the model still computes the same thing once we convert
 it to PyTorch. Test cases are computed on CPU using float.
-"""
+]]--
 
 
 local cmd = torch.CmdLine()
@@ -31,9 +31,9 @@ local tests = {}
 for i = 1, opt.num_tests do
   print(string.format('Making test case %d', i))
   local input = torch.randn(1, 3, 224, 224):float()
-  local output = model:forward(input)
+  local output = model:forward(input):clone()
   local grad_output = torch.randn(#output):float()
-  local grad_input = model:backward(input, grad_output)
+  local grad_input = model:backward(input, grad_output):clone()
   table.insert(tests, {
     input=input,
     output=output,
